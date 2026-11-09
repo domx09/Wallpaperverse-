@@ -1,203 +1,126 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090b12">
-<title>WallpaperVerse — Discover Your World</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#090b12;--panel:#121622;--muted:#9299aa;--accent:#8b5cf6;--cyan:#22d3ee}
-body{font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:#fff;min-height:100vh}
-header{position:sticky;top:0;z-index:5;background:#090b12eF;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12;padding:17px 6%}
-nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
-.logo{font-size:24px;font-weight:900;letter-spacing:-1px}
-.logo span{color:var(--accent)}
-nav small{color:var(--muted)}
-.hero{text-align:center;padding:75px 20px 40px;background:radial-gradient(ellipse at 50% 0%,#6d28d955,transparent 65%)}
-.tag{color:#c4b5fd;font-size:12px;font-weight:800;letter-spacing:3px}
-h1{font-size:clamp(38px,7vw,72px);font-weight:900;letter-spacing:-3px;margin:15px 0}
-h1 span{background:linear-gradient(90deg,#a78bfa,#22d3ee);background-clip:text;color:transparent}
-.hero p{color:var(--muted);margin-bottom:28px}
-.search{display:flex;max-width:650px;margin:auto;background:#171c29;border:1px solid #ffffff20;border-radius:15px;padding:7px}
-.search input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;padding:13px;font-size:15px}
-button{cursor:pointer;border:0;color:white;font-weight:700}
-.search button{background:linear-gradient(120deg,#7c3aed,#2563eb);padding:0 24px;border-radius:10px}
-.categories{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:25px 15px}
-.chip{padding:10px 17px;background:#171c29;border:1px solid #ffffff12;border-radius:30px;color:#c6cada}
-.chip.active,.chip:hover{background:#7139c8;border-color:#a78bfa;color:white}
-main{max-width:1500px;margin:auto;padding:10px 5% 60px}
-.heading{display:flex;justify-content:space-between;align-items:center;margin:15px 0 22px;gap:12px}
-.heading p{color:var(--muted);font-size:13px;margin-top:5px}
-.grid{columns:4 230px;column-gap:15px}
-.wall{position:relative;break-inside:avoid;margin-bottom:15px;border-radius:13px;overflow:hidden;background:var(--panel);cursor:pointer}
-.wall img{width:100%;display:block;transition:transform .35s}
-.wall:hover img{transform:scale(1.045)}
-.wall .info{position:absolute;inset:auto 0 0;padding:30px 12px 12px;background:linear-gradient(transparent,#000c);opacity:0;transition:.2s}
-.wall:hover .info{opacity:1}
-.info span{font-size:12px;color:#ddd}
-.status{text-align:center;color:var(--muted);padding:35px}
-.load{display:block;margin:30px auto;background:linear-gradient(120deg,#7c3aed,#2563eb);padding:14px 32px;border-radius:10px}
-.load:disabled{opacity:.5;cursor:wait}
-footer{text-align:center;padding:30px;color:var(--muted);border-top:1px solid #ffffff12;font-size:13px}
-.modal{display:none;position:fixed;inset:0;z-index:10;background:#000e;align-items:center;justify-content:center;padding:20px}
-.modal.open{display:flex}
-.modal-box{position:relative;background:#151925;border:1px solid #ffffff22;border-radius:16px;max-width:850px;width:100%;max-height:92vh;overflow:auto;padding:14px}
-.modal img{display:block;max-width:100%;max-height:68vh;object-fit:contain;margin:auto;border-radius:9px}
-.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:15px}
-.action{background:#7139c8;padding:12px 20px;border-radius:9px}
-.close{position:absolute;right:20px;top:20px;background:#000b;border-radius:50%;width:35px;height:35px;font-size:20px;z-index:2}
-@media(max-width:600px){header{padding:14px 5%}.hero{padding-top:55px}h1{letter-spacing:-2px}.grid{columns:2 140px}.search button{padding:0 15px}.heading{align-items:flex-start}}
-</style>
-</head>
-<body>
-<header>
-<nav>
-<div class="logo">Wallpaper<span>Verse.</span></div>
-<small>YOUR SCREEN. YOUR UNIVERSE.</small>
-</nav>
-</header>
-
-<section class="hero">
-<div class="tag">✦ EXPLORE • DISCOVER • DOWNLOAD ✦</div>
-<h1>Find Your <span>Perfect</span><br>Wallpaper.</h1>
-<p>Explore stunning HD wallpapers for every screen and every mood.</p>
-<div class="search">
-<input id="search" placeholder="Search cars, anime, nature, gaming..." />
-<button id="searchBtn">Search ↗</button>
-</div>
-</section>
-
-<div class="categories" id="categories">
-<button class="chip active" data-query="4k">✨ All</button>
-<button class="chip" data-query="cars">🚗 Cars</button>
-<button class="chip" data-query="motorcycle">🏍️ Bikes</button>
-<button class="chip" data-query="anime">🎌 Anime</button>
-<button class="chip" data-query="nature">🌿 Nature</button>
-<button class="chip" data-query="gaming">🎮 Gaming</button>
-<button class="chip" data-query="technology">💻 Tech</button>
-<button class="chip" data-query="space">🚀 Space</button>
-<button class="chip" data-query="football">⚽ Sports</button>
-<button class="chip" data-query="abstract">🎨 Abstract</button>
-</div>
-
-<main>
-<div class="heading">
-<div><h2>Explore Wallpapers</h2><p id="subtitle">Discover something amazing today.</p></div>
-<small style="color:#9299aa">HD • 4K • SFW</small>
-</div>
-<div class="grid" id="grid"></div>
-<div class="status" id="status">Loading beautiful wallpapers...</div>
-<button class="load" id="loadMore" hidden>Load More Wallpapers ↓</button>
-</main>
-
-<footer>
-<div class="logo">Wallpaper<span>Verse.</span></div>
-<p style="margin-top:10px">Made for wallpaper lovers. Images provided by Wallhaven.</p>
-<p style="margin-top:7px">Please respect the original creators' image licenses.</p>
-</footer>
-
-<div class="modal" id="modal">
-<div class="modal-box">
-<button class="close" id="close">×</button>
-<img id="preview" alt="Wallpaper preview">
-<div class="modal-actions">
-<a id="download" class="action" download target="_blank" style="text-decoration:none">⬇ Download</a>
-<button class="action" id="copy">Copy Image Link</button>
-</div>
-</div>
-</div>
-
 <script>
-const API="https://wallhaven.cc/api/v1/search";
 const grid=document.getElementById("grid");
 const status=document.getElementById("status");
 const loadMore=document.getElementById("loadMore");
 const searchInput=document.getElementById("search");
-let query="4k",page=1,loading=false,selectedImage="";
 
-async function fetchWallpapers(reset=false){
+let query="wallpaper",page=0,loading=false,selectedImage="";
+
+const imageTerms={
+ "4k":"4k wallpaper",
+ "cars":"sports car",
+ "motorcycle":"motorcycle",
+ "anime":"anime illustration",
+ "nature":"beautiful nature",
+ "gaming":"gaming setup",
+ "technology":"technology",
+ "space":"galaxy space",
+ "football":"football stadium",
+ "abstract":"abstract art"
+};
+
+function addImages(reset=false){
  if(loading)return;
+
  loading=true;
  loadMore.disabled=true;
  status.hidden=false;
- status.textContent=reset?"Finding amazing wallpapers...":"Loading more wallpapers...";
- if(reset){grid.innerHTML="";page=1;loadMore.hidden=true}
- document.getElementById("subtitle").textContent='Results for "'+query+'"';
- try{
-  const url=API+"?categories=111&purity=100&sorting=relevance&order=desc&q="+encodeURIComponent(query)+"&page="+page;
-  const response=await fetch(url);
-  if(!response.ok)throw new Error("Wallpaper service unavailable");
-  const result=await response.json();
-  const items=result.data||[];
-  if(items.length===0&&page===1){
-   status.textContent="No wallpapers found. Try another search.";
-   loadMore.hidden=true;
-  }else{
-   items.forEach(item=>{
-    const card=document.createElement("div");
-    card.className="wall";
-    const img=document.createElement("img");
-    img.src=item.thumbs.large||item.thumbs.original;
-    img.alt="HD wallpaper";
-    img.loading="lazy";
-    img.onerror=()=>card.remove();
-    const info=document.createElement("div");
-    info.className="info";
-    const label=document.createElement("span");
-    label.textContent=(item.resolution||"HD")+" • "+(item.file_type||"Wallpaper");
-    info.appendChild(label);
-    card.append(img,info);
-    card.addEventListener("click",()=>openPreview(item.path));
-    grid.appendChild(card);
-   });
-   status.textContent=items.length?"Showing beautiful wallpapers from Wallhaven.":"No more wallpapers found.";
-   loadMore.hidden=items.length===0||!result.meta||page>=result.meta.last_page;
-   page++;
-  }
- }catch(error){
-  status.textContent="Could not load wallpapers. Check your internet connection and try again.";
-  console.error(error);
+ status.textContent="Loading beautiful wallpapers...";
+
+ if(reset){
+  grid.innerHTML="";
+  page=0;
  }
+
+ const term=imageTerms[query]||query;
+
+ for(let i=0;i<20;i++){
+  const seed=page*20+i+1;
+  const url="https://loremflickr.com/900/1200/"+encodeURIComponent(term)+"?lock="+seed;
+
+  const card=document.createElement("div");
+  card.className="wall";
+
+  const img=document.createElement("img");
+  img.src=url;
+  img.alt=term+" wallpaper";
+  img.loading="lazy";
+  img.onerror=()=>card.remove();
+
+  const info=document.createElement("div");
+  info.className="info";
+
+  const label=document.createElement("span");
+  label.textContent="HD • "+term;
+
+  info.appendChild(label);
+  card.append(img,info);
+
+  card.addEventListener("click",()=>openPreview(url));
+  grid.appendChild(card);
+ }
+
+ page++;
+ status.textContent="Explore images matching: "+term;
+ loadMore.hidden=false;
+
  loading=false;
  loadMore.disabled=false;
 }
 
 function search(){
- query=searchInput.value.trim()||"4k";
+ query=searchInput.value.trim().toLowerCase()||"4k";
  document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
- fetchWallpapers(true);
+ addImages(true);
 }
+
 function openPreview(url){
  selectedImage=url;
  document.getElementById("preview").src=url;
  document.getElementById("download").href=url;
  document.getElementById("modal").classList.add("open");
 }
+
 document.getElementById("searchBtn").addEventListener("click",search);
-searchInput.addEventListener("keydown",e=>{if(e.key==="Enter")search()});
-loadMore.addEventListener("click",()=>fetchWallpapers());
-document.getElementById("close").addEventListener("click",()=>document.getElementById("modal").classList.remove("open"));
-document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("open")});
+
+searchInput.addEventListener("keydown",e=>{
+ if(e.key==="Enter")search();
+});
+
+loadMore.addEventListener("click",()=>addImages());
+
+document.getElementById("close").addEventListener("click",()=>{
+ document.getElementById("modal").classList.remove("open");
+});
+
+document.getElementById("modal").addEventListener("click",e=>{
+ if(e.target.id==="modal")e.currentTarget.classList.remove("open");
+});
+
 document.getElementById("copy").addEventListener("click",async()=>{
  try{
   await navigator.clipboard.writeText(selectedImage);
   document.getElementById("copy").textContent="✓ Link Copied!";
-  setTimeout(()=>document.getElementById("copy").textContent="Copy Image Link",1600);
- }catch(e){alert("Could not copy link. Please copy it from the address bar.");}
+  setTimeout(()=>{
+   document.getElementById("copy").textContent="Copy Image Link";
+  },1600);
+ }catch(e){
+  alert("Could not copy link.");
+ }
 });
+
 document.getElementById("categories").addEventListener("click",e=>{
  const btn=e.target.closest(".chip");
  if(!btn)return;
+
  document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
  btn.classList.add("active");
+
  searchInput.value=btn.dataset.query==="4k"?"":btn.dataset.query;
  query=btn.dataset.query;
- fetchWallpapers(true);
-});
-fetchWallpapers(true);
-</script>
-</body>
-</html>
 
+ addImages(true);
+});
+
+addImages(true);
+</script>
