@@ -1,126 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WallpaperVerse - Discover Your World</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+ background:#090b12;
+ color:white;
+ font-family:Arial,sans-serif;
+}
+
+header{
+ padding:22px 6%;
+ background:#10131d;
+ border-bottom:1px solid #252938;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.logo{
+ font-size:25px;
+ font-weight:900;
+}
+
+.logo span{color:#9b68ff}
+
+header small{color:#9299aa}
+
+.hero{
+ text-align:center;
+ padding:65px 15px 35px;
+ background:radial-gradient(ellipse at top,#51249b66,transparent 70%);
+}
+
+.hero h1{
+ font-size:clamp(38px,7vw,68px);
+ margin:20px 0;
+}
+
+.hero h1 span{
+ color:#a78bfa;
+}
+
+.hero p{color:#aaa;margin-bottom:25px}
+
+.search{
+ display:flex;
+ max-width:600px;
+ margin:auto;
+ background:#191e2b;
+ padding:7px;
+ border-radius:12px;
+}
+
+.search input{
+ flex:1;
+ min-width:0;
+ padding:13px;
+ border:0;
+ outline:0;
+ background:transparent;
+ color:white;
+ font-size:16px;
+}
+
+button{
+ cursor:pointer;
+ border:0;
+ color:white;
+ font-weight:bold;
+}
+
+.search button,.load{
+ background:linear-gradient(120deg,#8b5cf6,#2563eb);
+ padding:13px 22px;
+ border-radius:9px;
+}
+
+.categories{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:10px;
+ padding:25px 10px;
+}
+
+.chip{
+ background:#191e2b;
+ padding:11px 17px;
+ border-radius:30px;
+ border:1px solid #303547;
+}
+
+.chip.active,.chip:hover{
+ background:#7139c8;
+}
+
+main{
+ max-width:1450px;
+ margin:auto;
+ padding:20px 5% 60px;
+}
+
+.heading{
+ margin:15px 0 25px;
+}
+
+.heading p{
+ color:#999;
+ margin-top:7px;
+}
+
+.grid{
+ columns:4 220px;
+ column-gap:15px;
+}
+
+.wall{
+ break-inside:avoid;
+ margin-bottom:15px;
+ overflow:hidden;
+ border-radius:13px;
+ background:#171c29;
+ cursor:pointer;
+ position:relative;
+}
+
+.wall img{
+ width:100%;
+ display:block;
+ transition:.3s;
+}
+
+.wall:hover img{transform:scale(1.04)}
+
+.info{
+ position:absolute;
+ bottom:0;
+ left:0;
+ right:0;
+ padding:20px 12px 12px;
+ background:linear-gradient(transparent,#000c);
+ font-size:13px;
+}
+
+.status{
+ text-align:center;
+ color:#aaa;
+ padding:25px;
+}
+
+.load{
+ display:block;
+ margin:25px auto;
+}
+
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#000e;
+ z-index:10;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+}
+
+.modal.open{display:flex}
+
+.modal-box{
+ background:#171c29;
+ padding:15px;
+ border-radius:15px;
+ max-width:850px;
+ width:100%;
+ text-align:center;
+}
+
+.modal img{
+ max-width:100%;
+ max-height:70vh;
+ object-fit:contain;
+}
+
+.actions{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ padding:15px;
+ flex-wrap:wrap;
+}
+
+.action{
+ background:#7139c8;
+ padding:12px 20px;
+ border-radius:8px;
+ text-decoration:none;
+ color:white;
+}
+
+.close{
+ float:right;
+ background:#333;
+ padding:8px 13px;
+ border-radius:50%;
+}
+
+footer{
+ text-align:center;
+ padding:30px;
+ color:#999;
+ border-top:1px solid #252938;
+}
+
+@media(max-width:600px){
+ .grid{columns:2 140px}
+ header{padding:17px 5%}
+ header small{font-size:9px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">Wallpaper<span>Verse.</span></div>
+ <small>YOUR SCREEN. YOUR UNIVERSE.</small>
+</header>
+
+<section class="hero">
+ <p>✦ EXPLORE • DISCOVER • DOWNLOAD ✦</p>
+
+ <h1>Find Your <span>Perfect</span><br>Wallpaper.</h1>
+
+ <p>Explore beautiful wallpapers for every screen and mood.</p>
+
+ <div class="search">
+  <input id="search" placeholder="Search cars, anime, nature...">
+  <button onclick="searchImages()">Search ↗</button>
+ </div>
+</section>
+
+<div class="categories">
+ <button class="chip active" onclick="filterImages('all',this)">✨ All</button>
+ <button class="chip" onclick="filterImages('cars',this)">🚗 Cars</button>
+ <button class="chip" onclick="filterImages('bikes',this)">🏍️ Bikes</button>
+ <button class="chip" onclick="filterImages('anime',this)">🎌 Anime</button>
+ <button class="chip" onclick="filterImages('nature',this)">🌿 Nature</button>
+ <button class="chip" onclick="filterImages('gaming',this)">🎮 Gaming</button>
+ <button class="chip" onclick="filterImages('space',this)">🚀 Space</button>
+ <button class="chip" onclick="filterImages('sports',this)">⚽ Sports</button>
+ </div>
+
+<main>
+
+ <div class="heading">
+  <h2>Explore Wallpapers</h2>
+  <p id="subtitle">Discover something amazing today.</p>
+ </div>
+
+ <div class="grid" id="grid"></div>
+
+ <div class="status" id="status"></div>
+
+ <button class="load" onclick="loadMore()">Load More Wallpapers ↓</button>
+
+</main>
+
+<div class="modal" id="modal">
+ <div class="modal-box">
+  <button class="close" onclick="closePreview()">✕</button>
+  <br><br>
+  <img id="preview" alt="Wallpaper preview">
+  <div class="actions">
+   <a id="download" class="action" download target="_blank">⬇ Download</a>
+   <button class="action" onclick="copyLink()">Copy Image Link</button>
+  </div>
+ </div>
+</div>
+
+<footer>
+ <div class="logo">Wallpaper<span>Verse.</span></div>
+ <p style="margin-top:10px">Made for wallpaper lovers.</p>
+ <p style="margin-top:7px">Images provided by Unsplash.</p>
+</footer>
+
 <script>
-const grid=document.getElementById("grid");
-const status=document.getElementById("status");
-const loadMore=document.getElementById("loadMore");
-const searchInput=document.getElementById("search");
 
-let query="wallpaper",page=0,loading=false,selectedImage="";
+const photos = [
+ ["cars","photo-1503376780353-7e6692767b70"],
+ ["cars","photo-1492144534655-ae79c964c9d7"],
+ ["cars","photo-1503736334956-4c8f8e92946d"],
+ ["cars","photo-1511919884226-fd3cad34687c"],
+ ["bikes","photo-1558981806-ec527fa84c39"],
+ ["bikes","photo-1558981403-c5f9899a28bc"],
+ ["nature","photo-1470252649378-9c29740c9fa8"],
+ ["nature","photo-1441974231531-c6227db76b6e"],
+ ["nature","photo-1470770841072-f978cf4d019e"],
+ ["nature","photo-1500530855697-b586d89ba3ee"],
+ ["space","photo-1462331940025-496dfbfc7564"],
+ ["space","photo-1446776811953-b23d57bd21aa"],
+ ["gaming","photo-1542751371-adc38448a05e"],
+ ["gaming","photo-1593305841991-05c297ba4575"],
+ ["sports","photo-1461896836934-ffe607ba8211"],
+ ["sports","photo-1517649763962-0c623066013b"],
+ ["anime","photo-1578632767115-351597cf2477"],
+ ["anime","photo-1614583225154-5fcdda07019e"]
+];
 
-const imageTerms={
- "4k":"4k wallpaper",
- "cars":"sports car",
- "motorcycle":"motorcycle",
- "anime":"anime illustration",
- "nature":"beautiful nature",
- "gaming":"gaming setup",
- "technology":"technology",
- "space":"galaxy space",
- "football":"football stadium",
- "abstract":"abstract art"
-};
+let currentFilter="all";
+let visibleCount=12;
+let selectedUrl="";
 
-function addImages(reset=false){
- if(loading)return;
+function imageUrl(id){
+ return "https://images.unsplash.com/"+id+"?auto=format&fit=crop&w=1000&q=85";
+}
 
- loading=true;
- loadMore.disabled=true;
- status.hidden=false;
- status.textContent="Loading beautiful wallpapers...";
+function render(){
 
- if(reset){
-  grid.innerHTML="";
-  page=0;
- }
+ const grid=document.getElementById("grid");
+ grid.innerHTML="";
 
- const term=imageTerms[query]||query;
+ const filtered=photos.filter(item=>{
+  return currentFilter==="all" || item[0]===currentFilter;
+ });
 
- for(let i=0;i<20;i++){
-  const seed=page*20+i+1;
-  const url="https://loremflickr.com/900/1200/"+encodeURIComponent(term)+"?lock="+seed;
+ const shown=filtered.slice(0,visibleCount);
+
+ shown.forEach(item=>{
+
+  const url=imageUrl(item[1]);
 
   const card=document.createElement("div");
   card.className="wall";
 
   const img=document.createElement("img");
   img.src=url;
-  img.alt=term+" wallpaper";
+  img.alt=item[0]+" wallpaper";
   img.loading="lazy";
-  img.onerror=()=>card.remove();
 
   const info=document.createElement("div");
   info.className="info";
+  info.textContent=item[0].toUpperCase()+" • HD";
 
-  const label=document.createElement("span");
-  label.textContent="HD • "+term;
-
-  info.appendChild(label);
   card.append(img,info);
 
-  card.addEventListener("click",()=>openPreview(url));
+  card.onclick=()=>openPreview(url);
+
   grid.appendChild(card);
- }
 
- page++;
- status.textContent="Explore images matching: "+term;
- loadMore.hidden=false;
+ });
 
- loading=false;
- loadMore.disabled=false;
+ document.getElementById("status").textContent=
+  shown.length+" wallpapers available";
+
 }
 
-function search(){
- query=searchInput.value.trim().toLowerCase()||"4k";
- document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
- addImages(true);
+function filterImages(category,button){
+
+ currentFilter=category;
+ visibleCount=12;
+
+ document.querySelectorAll(".chip").forEach(b=>{
+  b.classList.remove("active");
+ });
+
+ button.classList.add("active");
+
+ document.getElementById("subtitle").textContent=
+  "Explore "+category+" wallpapers";
+
+ render();
+}
+
+function searchImages(){
+
+ const value=document.getElementById("search").value.toLowerCase().trim();
+
+ currentFilter="all";
+ visibleCount=photos.length;
+
+ document.querySelectorAll(".chip").forEach(b=>{
+  b.classList.remove("active");
+ });
+
+ const filtered=photos.filter(item=>{
+  return item[0].includes(value);
+ });
+
+ const grid=document.getElementById("grid");
+ grid.innerHTML="";
+
+ filtered.forEach(item=>{
+
+  const url=imageUrl(item[1]);
+
+  const card=document.createElement("div");
+  card.className="wall";
+
+  const img=document.createElement("img");
+  img.src=url;
+  img.alt=item[0]+" wallpaper";
+  img.loading="lazy";
+
+  const info=document.createElement("div");
+  info.className="info";
+  info.textContent=item[0].toUpperCase()+" • HD";
+
+  card.append(img,info);
+  card.onclick=()=>openPreview(url);
+
+  grid.appendChild(card);
+
+ });
+
+ document.getElementById("subtitle").textContent=
+  'Search results for "'+value+'"';
+
+ document.getElementById("status").textContent=
+  filtered.length ? filtered.length+" wallpapers found" : "No wallpapers found. Try another search.";
+
+}
+
+function loadMore(){
+ visibleCount+=6;
+ render();
 }
 
 function openPreview(url){
- selectedImage=url;
+ selectedUrl=url;
  document.getElementById("preview").src=url;
  document.getElementById("download").href=url;
  document.getElementById("modal").classList.add("open");
 }
 
-document.getElementById("searchBtn").addEventListener("click",search);
-
-searchInput.addEventListener("keydown",e=>{
- if(e.key==="Enter")search();
-});
-
-loadMore.addEventListener("click",()=>addImages());
-
-document.getElementById("close").addEventListener("click",()=>{
+function closePreview(){
  document.getElementById("modal").classList.remove("open");
+}
+
+function copyLink(){
+ navigator.clipboard.writeText(selectedUrl)
+ .then(()=>alert("Image link copied!"))
+ .catch(()=>alert("Could not copy image link."));
+}
+
+document.getElementById("search").addEventListener("keydown",e=>{
+ if(e.key==="Enter")searchImages();
 });
 
-document.getElementById("modal").addEventListener("click",e=>{
- if(e.target.id==="modal")e.currentTarget.classList.remove("open");
-});
+render();
 
-document.getElementById("copy").addEventListener("click",async()=>{
- try{
-  await navigator.clipboard.writeText(selectedImage);
-  document.getElementById("copy").textContent="✓ Link Copied!";
-  setTimeout(()=>{
-   document.getElementById("copy").textContent="Copy Image Link";
-  },1600);
- }catch(e){
-  alert("Could not copy link.");
- }
-});
-
-document.getElementById("categories").addEventListener("click",e=>{
- const btn=e.target.closest(".chip");
- if(!btn)return;
-
- document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
- btn.classList.add("active");
-
- searchInput.value=btn.dataset.query==="4k"?"":btn.dataset.query;
- query=btn.dataset.query;
-
- addImages(true);
-});
-
-addImages(true);
 </script>
+
+</body>
+</html>
