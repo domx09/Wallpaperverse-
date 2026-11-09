@@ -205,7 +205,34 @@ async function searchWallpapers(reset=true){
    const label=document.createElement("div");
    label.className="info";
    label.textContent=item.title.replace("File:","");
-   card.append(img,label);
+   // SAVE PIN BUTTON
+const actions = document.createElement("div");
+actions.className = "wall-actions";
+
+const saveBtn = document.createElement("button");
+saveBtn.className = "save-pin";
+saveBtn.textContent = "❤️ Save";
+
+saveBtn.addEventListener("click", (event) => {
+ event.stopPropagation();
+
+ let saved = JSON.parse(localStorage.getItem("wallpaperPins") || "[]");
+
+ const pin = {url, original, title};
+
+ if (saved.some(item => item.original === original)) {
+  alert("Already saved!");
+  return;
+ }
+
+ saved.push(pin);
+ localStorage.setItem("wallpaperPins", JSON.stringify(saved));
+
+ saveBtn.textContent = "✓ Saved";
+});
+
+actions.appendChild(saveBtn);
+card.append(img,label,actions);
    card.addEventListener("click",()=>showImage(url,original,item.title));
    grid.appendChild(card);
   });
