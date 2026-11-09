@@ -293,18 +293,135 @@ animated.forEach(([name,theme])=>{
 function previewAnimation(name,theme){
  const content=document.getElementById("modalContent");
  content.innerHTML="";
+
  const preview=document.createElement("div");
  preview.className="scene-preview";
+
  const scene=document.createElement("div");
  scene.className="scene "+theme;
+
  const title=document.createElement("h3");
  title.textContent=name;
+
  scene.appendChild(title);
  preview.appendChild(scene);
  content.appendChild(preview);
+
  const actions=document.getElementById("modalActions");
- actions.innerHTML="<span style='color:#aaa;padding:12px'>Animated preview • Use this as an in-browser background</span>";
+ actions.innerHTML=`
+  <select id="videoDuration" class="action">
+   <option value="5">5 Seconds</option>
+   <option value="10">10 Seconds</option>
+   <option value="15">15 Seconds</option>
+  </select>
+  <button class="action" id="exportVideo">🎬 Export Video</button>
+  <p id="exportStatus" style="width:100%;color:#aaa"></p>
+ `;
+
+ document.getElementById("exportVideo").onclick=()=>{
+  exportAnimation(preview);
+ };
+
  openModal();
+}
+
+async function exportAnimation(element){
+
+ const status=document.getElementById("exportStatus");
+ const duration=Number(document.getElementById("videoDuration").value);
+
+ if(!window.MediaRecorder){
+  status.textContent="Video recording is not supported in this browser.";
+  return;
+ }
+
+ const canvas=document.createElement("canvas");
+ canvas.width=1280;
+ canvas.height=720;
+
+ const ctx=canvas.getContext("2d");
+
+ let startTime=null;
+ let animationFrame;
+
+ function draw(time){
+  if(!startTime)startTime=time;
+
+  const elapsed=(time-startTime)/1000;
+
+  ctx.fillStyle="#090b20";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const gradient=ctx.createLinearGradient(
+   Math.sin(elapsed)*canvas.width,
+   0,
+   canvas.width,
+   canvas.height
+  );
+
+  gradient.addColorStop(0,"#7c3aed");
+  gradient.addColorStop(0.5,"#0891b2");
+  gradient.addColorStop(1,"#090b20");
+
+  ctx.fillStyle=gradient;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  for(let i=0;i<90;i++){
+   const x=(i*137+elapsed*35)%canvas.width;
+   const y=(i*83+Math.sin(elapsed+i)*45)%canvas.height;
+
+   ctx.beginPath();
+   ctx.arc(x,y,2+(i%3),0,Math.PI*2);
+   ctx.fillStyle="rgba(255,255,255,0.65)";
+   ctx.fill();
+  }
+
+  ctx.fillStyle="white";
+  ctx.font="bold 48px Arial";
+  ctx.fillText("WallpaperVerse",50,90);
+
+  animationFrame=requestAnimationFrame(draw);
+ }
+
+ const stream=canvas.captureStream(30);
+
+ const mimeType=
+  MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
+  ?"video/webm;codecs=vp9"
+  :"video/webm";
+
+ const recorder=new MediaRecorder(stream,{mimeType});
+ const chunks=[];
+
+ recorder.ondataavailable=e=>{
+  if(e.data.size>0)chunks.push(e.data);
+ };
+
+ recorder.onstop=()=>{
+  cancelAnimationFrame(animationFrame);
+
+  const blob=new Blob(chunks,{type:mimeType});
+  const url=URL.createObjectURL(blob);
+
+  const link=document.createElement("a");
+  link.href=url;
+  link.download="WallpaperVerse-Animation.webm";
+  link.click();
+
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+
+  status.textContent="Video exported successfully!";
+  stream.getTracks().forEach(track=>track.stop());
+ };
+
+ draw(0);
+ recorder.start();
+
+ status.textContent="Recording your animated wallpaper...";
+
+ setTimeout(()=>{
+  if(recorder.state==="recording")recorder.stop();
+ },duration*1000);
 }
 
 searchWallpapers(true);
