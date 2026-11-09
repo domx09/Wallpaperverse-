@@ -2,227 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WallpaperVerse - Discover Your World</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>WallpaperVerse — Discover Your World</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-
-body{
- background:#090b12;
- color:white;
- font-family:Arial,sans-serif;
-}
-
-header{
- padding:22px 6%;
- background:#10131d;
- border-bottom:1px solid #252938;
- display:flex;
- justify-content:space-between;
- align-items:center;
-}
-
-.logo{
- font-size:25px;
- font-weight:900;
-}
-
-.logo span{color:#9b68ff}
-
+body{background:#090b12;color:white;font-family:Arial,sans-serif}
+header{padding:20px 6%;background:#10131d;border-bottom:1px solid #252938;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:25px;font-weight:900}
+.logo span{color:#a78bfa}
 header small{color:#9299aa}
-
-.hero{
- text-align:center;
- padding:65px 15px 35px;
- background:radial-gradient(ellipse at top,#51249b66,transparent 70%);
-}
-
-.hero h1{
- font-size:clamp(38px,7vw,68px);
- margin:20px 0;
-}
-
-.hero h1 span{
- color:#a78bfa;
-}
-
+.hero{text-align:center;padding:65px 15px 35px;background:radial-gradient(ellipse at top,#51249b66,transparent 70%)}
+.hero h1{font-size:clamp(38px,7vw,68px);margin:20px 0}
+.hero h1 span{color:#a78bfa}
 .hero p{color:#aaa;margin-bottom:25px}
-
-.search{
- display:flex;
- max-width:600px;
- margin:auto;
- background:#191e2b;
- padding:7px;
- border-radius:12px;
-}
-
-.search input{
- flex:1;
- min-width:0;
- padding:13px;
- border:0;
- outline:0;
- background:transparent;
- color:white;
- font-size:16px;
-}
-
-button{
- cursor:pointer;
- border:0;
- color:white;
- font-weight:bold;
-}
-
-.search button,.load{
- background:linear-gradient(120deg,#8b5cf6,#2563eb);
- padding:13px 22px;
- border-radius:9px;
-}
-
-.categories{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- gap:10px;
- padding:25px 10px;
-}
-
-.chip{
- background:#191e2b;
- padding:11px 17px;
- border-radius:30px;
- border:1px solid #303547;
-}
-
-.chip.active,.chip:hover{
- background:#7139c8;
-}
-
-main{
- max-width:1450px;
- margin:auto;
- padding:20px 5% 60px;
-}
-
-.heading{
- margin:15px 0 25px;
-}
-
-.heading p{
- color:#999;
- margin-top:7px;
-}
-
-.grid{
- columns:4 220px;
- column-gap:15px;
-}
-
-.wall{
- break-inside:avoid;
- margin-bottom:15px;
- overflow:hidden;
- border-radius:13px;
- background:#171c29;
- cursor:pointer;
- position:relative;
-}
-
-.wall img{
- width:100%;
- display:block;
- transition:.3s;
-}
-
+.search{display:flex;max-width:650px;margin:auto;background:#191e2b;padding:7px;border-radius:12px}
+.search input{flex:1;min-width:0;padding:13px;border:0;outline:0;background:transparent;color:white;font-size:16px}
+button{cursor:pointer;border:0;color:white;font-weight:bold}
+.search button,.load,.primary{background:linear-gradient(120deg,#8b5cf6,#2563eb);padding:13px 22px;border-radius:9px}
+.tabs,.categories{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding:20px 10px}
+.tab,.chip{background:#191e2b;padding:11px 18px;border-radius:30px;border:1px solid #303547}
+.tab.active,.chip.active,.tab:hover,.chip:hover{background:#7139c8}
+main{max-width:1450px;margin:auto;padding:20px 5% 60px}
+.heading{margin:15px 0 25px}
+.heading p{color:#999;margin-top:7px}
+.grid{columns:4 220px;column-gap:15px}
+.wall{break-inside:avoid;margin-bottom:15px;overflow:hidden;border-radius:13px;background:#171c29;cursor:pointer;position:relative}
+.wall img{width:100%;display:block;transition:.3s;min-height:130px}
 .wall:hover img{transform:scale(1.04)}
-
-.info{
- position:absolute;
- bottom:0;
- left:0;
- right:0;
- padding:20px 12px 12px;
- background:linear-gradient(transparent,#000c);
- font-size:13px;
-}
-
-.status{
- text-align:center;
- color:#aaa;
- padding:25px;
-}
-
-.load{
- display:block;
- margin:25px auto;
-}
-
-.modal{
- display:none;
- position:fixed;
- inset:0;
- background:#000e;
- z-index:10;
- align-items:center;
- justify-content:center;
- padding:20px;
-}
-
+.info{position:absolute;bottom:0;left:0;right:0;padding:25px 12px 12px;background:linear-gradient(transparent,#000c);font-size:13px}
+.status{text-align:center;color:#aaa;padding:25px}
+.load{display:block;margin:25px auto}
+.panel{display:none}
+.panel.active{display:block}
+footer{text-align:center;padding:30px;color:#999;border-top:1px solid #252938}
+.modal{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
+.modal-box{background:#171c29;padding:15px;border-radius:15px;max-width:950px;width:100%;text-align:center;max-height:95vh;overflow:auto}
+.modal img{max-width:100%;max-height:65vh;object-fit:contain}
+.actions{display:flex;justify-content:center;gap:12px;padding:15px;flex-wrap:wrap}
+.action{background:#7139c8;padding:12px 20px;border-radius:8px;text-decoration:none;color:white}
+.close{float:right;background:#333;padding:8px 13px;border-radius:50%}
 
-.modal-box{
- background:#171c29;
- padding:15px;
- border-radius:15px;
- max-width:850px;
- width:100%;
- text-align:center;
-}
-
-.modal img{
- max-width:100%;
- max-height:70vh;
- object-fit:contain;
-}
-
-.actions{
- display:flex;
- justify-content:center;
- gap:12px;
- padding:15px;
- flex-wrap:wrap;
-}
-
-.action{
- background:#7139c8;
- padding:12px 20px;
- border-radius:8px;
- text-decoration:none;
- color:white;
-}
-
-.close{
- float:right;
- background:#333;
- padding:8px 13px;
- border-radius:50%;
-}
-
-footer{
- text-align:center;
- padding:30px;
- color:#999;
- border-top:1px solid #252938;
-}
-
-@media(max-width:600px){
- .grid{columns:2 140px}
- header{padding:17px 5%}
- header small{font-size:9px}
-}
+/* Animated wallpaper studio */
+.studio{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.scene{height:270px;border-radius:15px;position:relative;overflow:hidden;cursor:pointer;background:#080d20}
+.scene h3{position:absolute;bottom:15px;left:15px;z-index:3;text-shadow:0 2px 8px black}
+.scene p{position:absolute;bottom:0;left:15px;z-index:3;font-size:12px;color:#ddd}
+.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,#000b)}
+.scene.galaxy{background:radial-gradient(circle at 30% 30%,#b18cff,transparent 15%),radial-gradient(circle at 70% 60%,#3b82f6,transparent 25%),linear-gradient(120deg,#05051d,#311052,#080b20);background-size:200% 200%;animation:galaxy 9s ease infinite}
+.scene.neon{background:linear-gradient(120deg,#090b22,#5b21b6,#0891b2,#090b22);background-size:300% 300%;animation:neon 5s ease infinite}
+.scene.rain{background:linear-gradient(145deg,#07172c,#182f4a,#050a18);overflow:hidden}
+.scene.rain:before{content:"";position:absolute;inset:-100px;background-image:repeating-linear-gradient(100deg,transparent 0 18px,#9de5ff88 19px,#9de5ff88 20px,transparent 21px 38px);animation:rain 0.5s linear infinite}
+.scene.sunset{background:linear-gradient(180deg,#160e3d,#b34b7b,#ffb36a,#25143b);background-size:100% 200%;animation:sunset 8s ease infinite}
+.scene.ocean{background:linear-gradient(180deg,#081b35,#087eaa,#00b8a9);background-size:200% 200%;animation:ocean 6s ease infinite}
+.scene.particles{background:radial-gradient(circle at 20% 20%,#b18cff,transparent 4%),radial-gradient(circle at 80% 60%,#22d3ee,transparent 5%),radial-gradient(circle at 40% 80%,#a78bfa,transparent 5%),#080b20;background-size:150% 150%;animation:galaxy 7s linear infinite}
+@keyframes galaxy{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
+@keyframes neon{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes rain{to{transform:translateY(60px)}}
+@keyframes sunset{0%,100%{background-position:0 0}50%{background-position:0 100%}}
+@keyframes ocean{0%,100%{background-position:0 0}50%{background-position:100% 100%}}
+.scene-preview{width:100%;height:65vh;min-height:300px;border-radius:12px;position:relative;overflow:hidden}
+.scene-preview .scene{height:100%;cursor:default}
+.scene-preview .scene h3{font-size:30px}
+@media(max-width:600px){.grid{columns:2 140px}header{padding:17px 5%}header small{font-size:9px}}
 </style>
 </head>
 
@@ -235,226 +79,235 @@ footer{
 
 <section class="hero">
  <p>✦ EXPLORE • DISCOVER • DOWNLOAD ✦</p>
-
  <h1>Find Your <span>Perfect</span><br>Wallpaper.</h1>
-
- <p>Explore beautiful wallpapers for every screen and mood.</p>
-
+ <p>Discover beautiful wallpapers and animated backgrounds.</p>
  <div class="search">
-  <input id="search" placeholder="Search cars, anime, nature...">
-  <button onclick="searchImages()">Search ↗</button>
+  <input id="search" placeholder="Search cars, anime, nature, gaming...">
+  <button id="searchBtn">Search ↗</button>
  </div>
 </section>
 
-<div class="categories">
- <button class="chip active" onclick="filterImages('all',this)">✨ All</button>
- <button class="chip" onclick="filterImages('cars',this)">🚗 Cars</button>
- <button class="chip" onclick="filterImages('bikes',this)">🏍️ Bikes</button>
- <button class="chip" onclick="filterImages('anime',this)">🎌 Anime</button>
- <button class="chip" onclick="filterImages('nature',this)">🌿 Nature</button>
- <button class="chip" onclick="filterImages('gaming',this)">🎮 Gaming</button>
- <button class="chip" onclick="filterImages('space',this)">🚀 Space</button>
- <button class="chip" onclick="filterImages('sports',this)">⚽ Sports</button>
+<div class="tabs">
+ <button class="tab active" data-panel="live">🌍 Live Wallpapers</button>
+ <button class="tab" data-panel="animated">✨ Animated Studio</button>
+</div>
+
+<section class="panel active" id="live">
+ <div class="categories" id="categories">
+  <button class="chip active" data-query="nature wallpaper">🌍 All</button>
+  <button class="chip" data-query="sports cars">🚗 Cars</button>
+  <button class="chip" data-query="motorcycles">🏍️ Bikes</button>
+  <button class="chip" data-query="anime art">🎌 Anime</button>
+  <button class="chip" data-query="nature landscape">🌿 Nature</button>
+  <button class="chip" data-query="gaming setup">🎮 Gaming</button>
+  <button class="chip" data-query="galaxy space">🚀 Space</button>
+  <button class="chip" data-query="football">⚽ Sports</button>
  </div>
 
-<main>
+ <main>
+  <div class="heading">
+   <h2>Explore Live Wallpapers</h2>
+   <p id="subtitle">Search the online image collection.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="status" id="status">Loading wallpapers...</div>
+  <button class="load" id="loadMore" hidden>Load More ↓</button>
+ </main>
+</section>
 
- <div class="heading">
-  <h2>Explore Wallpapers</h2>
-  <p id="subtitle">Discover something amazing today.</p>
- </div>
-
- <div class="grid" id="grid"></div>
-
- <div class="status" id="status"></div>
-
- <button class="load" onclick="loadMore()">Load More Wallpapers ↓</button>
-
-</main>
+<section class="panel" id="animated">
+ <main>
+  <div class="heading">
+   <h2>Animated Wallpaper Studio ✨</h2>
+   <p>Choose a moving background and preview its animation.</p>
+  </div>
+  <div class="studio" id="studio"></div>
+ </main>
+</section>
 
 <div class="modal" id="modal">
  <div class="modal-box">
-  <button class="close" onclick="closePreview()">✕</button>
-  <br><br>
-  <img id="preview" alt="Wallpaper preview">
-  <div class="actions">
-   <a id="download" class="action" download target="_blank">⬇ Download</a>
-   <button class="action" onclick="copyLink()">Copy Image Link</button>
-  </div>
+  <button class="close" id="close">✕</button>
+  <div id="modalContent"></div>
+  <div class="actions" id="modalActions"></div>
  </div>
 </div>
 
 <footer>
  <div class="logo">Wallpaper<span>Verse.</span></div>
  <p style="margin-top:10px">Made for wallpaper lovers.</p>
- <p style="margin-top:7px">Images provided by Unsplash.</p>
+ <p style="margin-top:7px">Online images from Wikimedia Commons. Animated previews created with CSS.</p>
 </footer>
 
 <script>
+const API="https://commons.wikimedia.org/w/api.php";
+const grid=document.getElementById("grid");
+const statusBox=document.getElementById("status");
+const loadButton=document.getElementById("loadMore");
+let currentQuery="nature wallpaper";
+let continuation=null;
+let busy=false;
 
-const photos = [
- ["cars","photo-1503376780353-7e6692767b70"],
- ["cars","photo-1492144534655-ae79c964c9d7"],
- ["cars","photo-1503736334956-4c8f8e92946d"],
- ["cars","photo-1511919884226-fd3cad34687c"],
- ["bikes","photo-1558981806-ec527fa84c39"],
- ["bikes","photo-1558981403-c5f9899a28bc"],
- ["nature","photo-1470252649378-9c29740c9fa8"],
- ["nature","photo-1441974231531-c6227db76b6e"],
- ["nature","photo-1470770841072-f978cf4d019e"],
- ["nature","photo-1500530855697-b586d89ba3ee"],
- ["space","photo-1462331940025-496dfbfc7564"],
- ["space","photo-1446776811953-b23d57bd21aa"],
- ["gaming","photo-1542751371-adc38448a05e"],
- ["gaming","photo-1593305841991-05c297ba4575"],
- ["sports","photo-1461896836934-ffe607ba8211"],
- ["sports","photo-1517649763962-0c623066013b"],
- ["anime","photo-1578632767115-351597cf2477"],
- ["anime","photo-1614583225154-5fcdda07019e"]
-];
-
-let currentFilter="all";
-let visibleCount=12;
-let selectedUrl="";
-
-function imageUrl(id){
- return "https://images.unsplash.com/"+id+"?auto=format&fit=crop&w=1000&q=85";
+async function searchWallpapers(reset=true){
+ if(busy)return;
+ busy=true;
+ loadButton.disabled=true;
+ statusBox.textContent="Searching online wallpapers...";
+ if(reset){
+  grid.innerHTML="";
+  continuation=null;
+ }
+ const params=new URLSearchParams({
+  action:"query",
+  generator:"search",
+  gsrsearch:"filetype:bitmap "+currentQuery,
+  gsrnamespace:"6",
+  gsrlimit:"24",
+  prop:"imageinfo",
+  iiprop:"url",
+  iiurlwidth:"900",
+  format:"json",
+  origin:"*"
+ });
+ if(continuation)params.set("gsroffset",continuation);
+ try{
+  const response=await fetch(API+"?"+params.toString());
+  if(!response.ok)throw new Error("Image service error");
+  const data=await response.json();
+  const pages=data.query?.pages||{};
+  const items=Object.values(pages);
+  items.forEach(item=>{
+   const info=item.imageinfo?.[0];
+   if(!info)return;
+   const url=info.thumburl||info.url;
+   const original=info.url||url;
+   const card=document.createElement("div");
+   card.className="wall";
+   const img=document.createElement("img");
+   img.src=url;
+   img.alt=item.title;
+   img.loading="lazy";
+   img.onerror=()=>card.remove();
+   const label=document.createElement("div");
+   label.className="info";
+   label.textContent=item.title.replace("File:","");
+   card.append(img,label);
+   card.addEventListener("click",()=>showImage(url,original,item.title));
+   grid.appendChild(card);
+  });
+  continuation=data.continue?.gsroffset||null;
+  statusBox.textContent=items.length?"Showing online results. Images are provided by Wikimedia Commons.":"No results found. Try another search.";
+  loadButton.hidden=!continuation;
+ }catch(error){
+  console.error(error);
+  statusBox.textContent="Could not reach Wikimedia Commons. Check your internet connection and try again.";
+ }
+ busy=false;
+ loadButton.disabled=false;
 }
 
-function render(){
-
- const grid=document.getElementById("grid");
- grid.innerHTML="";
-
- const filtered=photos.filter(item=>{
-  return currentFilter==="all" || item[0]===currentFilter;
- });
-
- const shown=filtered.slice(0,visibleCount);
-
- shown.forEach(item=>{
-
-  const url=imageUrl(item[1]);
-
-  const card=document.createElement("div");
-  card.className="wall";
-
-  const img=document.createElement("img");
-  img.src=url;
-  img.alt=item[0]+" wallpaper";
-  img.loading="lazy";
-
-  const info=document.createElement("div");
-  info.className="info";
-  info.textContent=item[0].toUpperCase()+" • HD";
-
-  card.append(img,info);
-
-  card.onclick=()=>openPreview(url);
-
-  grid.appendChild(card);
-
- });
-
- document.getElementById("status").textContent=
-  shown.length+" wallpapers available";
-
+function showImage(url,original,title){
+ const content=document.getElementById("modalContent");
+ content.innerHTML="";
+ const img=document.createElement("img");
+ img.src=url;
+ img.alt=title;
+ content.appendChild(img);
+ const actions=document.getElementById("modalActions");
+ actions.innerHTML="";
+ const link=document.createElement("a");
+ link.className="action";
+ link.href=original;
+ link.target="_blank";
+ link.rel="noopener";
+ link.textContent="Open / Download Original";
+ actions.appendChild(link);
+ openModal();
 }
 
-function filterImages(category,button){
-
- currentFilter=category;
- visibleCount=12;
-
- document.querySelectorAll(".chip").forEach(b=>{
-  b.classList.remove("active");
- });
-
- button.classList.add("active");
-
- document.getElementById("subtitle").textContent=
-  "Explore "+category+" wallpapers";
-
- render();
-}
-
-function searchImages(){
-
- const value=document.getElementById("search").value.toLowerCase().trim();
-
- currentFilter="all";
- visibleCount=photos.length;
-
- document.querySelectorAll(".chip").forEach(b=>{
-  b.classList.remove("active");
- });
-
- const filtered=photos.filter(item=>{
-  return item[0].includes(value);
- });
-
- const grid=document.getElementById("grid");
- grid.innerHTML="";
-
- filtered.forEach(item=>{
-
-  const url=imageUrl(item[1]);
-
-  const card=document.createElement("div");
-  card.className="wall";
-
-  const img=document.createElement("img");
-  img.src=url;
-  img.alt=item[0]+" wallpaper";
-  img.loading="lazy";
-
-  const info=document.createElement("div");
-  info.className="info";
-  info.textContent=item[0].toUpperCase()+" • HD";
-
-  card.append(img,info);
-  card.onclick=()=>openPreview(url);
-
-  grid.appendChild(card);
-
- });
-
- document.getElementById("subtitle").textContent=
-  'Search results for "'+value+'"';
-
- document.getElementById("status").textContent=
-  filtered.length ? filtered.length+" wallpapers found" : "No wallpapers found. Try another search.";
-
-}
-
-function loadMore(){
- visibleCount+=6;
- render();
-}
-
-function openPreview(url){
- selectedUrl=url;
- document.getElementById("preview").src=url;
- document.getElementById("download").href=url;
+function openModal(){
  document.getElementById("modal").classList.add("open");
 }
-
-function closePreview(){
+function closeModal(){
  document.getElementById("modal").classList.remove("open");
 }
 
-function copyLink(){
- navigator.clipboard.writeText(selectedUrl)
- .then(()=>alert("Image link copied!"))
- .catch(()=>alert("Could not copy image link."));
+function runSearch(){
+ currentQuery=document.getElementById("search").value.trim()||"nature wallpaper";
+ document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
+ document.getElementById("subtitle").textContent='Search results for "'+currentQuery+'"';
+ searchWallpapers(true);
 }
 
+document.getElementById("searchBtn").addEventListener("click",runSearch);
 document.getElementById("search").addEventListener("keydown",e=>{
- if(e.key==="Enter")searchImages();
+ if(e.key==="Enter")runSearch();
+});
+loadButton.addEventListener("click",()=>searchWallpapers(false));
+
+document.getElementById("categories").addEventListener("click",e=>{
+ const btn=e.target.closest(".chip");
+ if(!btn)return;
+ document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");
+ currentQuery=btn.dataset.query;
+ document.getElementById("search").value="";
+ document.getElementById("subtitle").textContent="Explore "+currentQuery;
+ searchWallpapers(true);
 });
 
-render();
+document.querySelectorAll(".tab").forEach(tab=>{
+ tab.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  tab.classList.add("active");
+  document.getElementById(tab.dataset.panel).classList.add("active");
+ });
+});
 
+document.getElementById("close").addEventListener("click",closeModal);
+document.getElementById("modal").addEventListener("click",e=>{
+ if(e.target.id==="modal")closeModal();
+});
+
+const animated=[
+ ["Galaxy Dreams","galaxy"],
+ ["Neon Flow","neon"],
+ ["Rainy Night","rain"],
+ ["Golden Sunset","sunset"],
+ ["Ocean Waves","ocean"],
+ ["Cosmic Particles","particles"]
+];
+
+const studio=document.getElementById("studio");
+animated.forEach(([name,theme])=>{
+ const card=document.createElement("div");
+ card.className="scene "+theme;
+ const title=document.createElement("h3");
+ title.textContent=name;
+ card.appendChild(title);
+ card.addEventListener("click",()=>previewAnimation(name,theme));
+ studio.appendChild(card);
+});
+
+function previewAnimation(name,theme){
+ const content=document.getElementById("modalContent");
+ content.innerHTML="";
+ const preview=document.createElement("div");
+ preview.className="scene-preview";
+ const scene=document.createElement("div");
+ scene.className="scene "+theme;
+ const title=document.createElement("h3");
+ title.textContent=name;
+ scene.appendChild(title);
+ preview.appendChild(scene);
+ content.appendChild(preview);
+ const actions=document.getElementById("modalActions");
+ actions.innerHTML="<span style='color:#aaa;padding:12px'>Animated preview • Use this as an in-browser background</span>";
+ openModal();
+}
+
+searchWallpapers(true);
 </script>
 
 </body>
