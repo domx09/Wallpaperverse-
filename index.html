@@ -87,7 +87,18 @@ footer{text-align:center;padding:30px;color:#999;border-top:1px solid #252938}
  </div>
 </section>
 
-<div class="tabs">
+<div class="app-layout">
+
+<aside class="side-nav">
+ <button class="active" data-nav="home">🏠 Home</button>
+ <button data-nav="saved">❤️ Saved Pins</button>
+ <button data-nav="animated">✨ Animated Studio</button>
+ <button data-nav="explore">🔎 Explore</button>
+</aside>
+
+<div class="feed-area">
+
+<
  <button class="tab active" data-panel="live">🌍 Live Wallpapers</button>
  <button class="tab" data-panel="animated">✨ Animated Studio</button>
 </div>
@@ -124,7 +135,10 @@ footer{text-align:center;padding:30px;color:#999;border-top:1px solid #252938}
   <div class="studio" id="studio"></div>
  </main>
 </section>
-
+  
+</div>
+</div>
+  
 <div class="modal" id="modal">
  <div class="modal-box">
   <button class="close" id="close">✕</button>
@@ -237,6 +251,31 @@ function runSearch(){
  document.querySelectorAll(".chip").forEach(b=>b.classList.remove("active"));
  document.getElementById("subtitle").textContent='Search results for "'+currentQuery+'"';
  searchWallpapers(true);
+ // SIDEBAR NAVIGATION
+document.querySelectorAll("[data-nav]").forEach(button => {
+ button.addEventListener("click", () => {
+
+  const target = button.dataset.nav;
+
+  if (target === "home" || target === "explore") {
+   document.querySelector('[data-panel="live"]').click();
+  }
+
+  if (target === "animated") {
+   document.querySelector('[data-panel="animated"]').click();
+  }
+
+  if (target === "saved") {
+   alert("Saved Pins feature is coming next!");
+  }
+
+  document.querySelectorAll("[data-nav]").forEach(btn => {
+   btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+ });
+});
 }
 
 document.getElementById("searchBtn").addEventListener("click",runSearch);
@@ -426,6 +465,132 @@ async function exportAnimation(element){
 
 searchWallpapers(true);
 </script>
+ /* PINTEREST STYLE UPGRADE */
+body {
+  background: #0b0c12;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #10131df0;
+  backdrop-filter: blur(15px);
+}
+
+.hero {
+  padding: 30px 15px;
+}
+
+.hero h1 {
+  font-size: clamp(32px, 5vw, 50px);
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 20px;
+  max-width: 1600px;
+  margin: auto;
+  padding: 15px;
+}
+
+.side-nav {
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+  background: #151824;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.side-nav button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 15px;
+  margin-bottom: 8px;
+  background: transparent;
+  border-radius: 10px;
+  color: white;
+}
+
+.side-nav button:hover,
+.side-nav button.active {
+  background: #7139c8;
+}
+
+.feed-area {
+  min-width: 0;
+}
+
+.feed-area main {
+  padding: 15px;
+}
+
+.grid {
+  columns: 5 180px;
+  column-gap: 15px;
+}
+
+.wall {
+  border-radius: 16px;
+  margin-bottom: 15px;
+}
+
+.wall img {
+  border-radius: 16px;
+}
+
+.wall-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: .2s;
+}
+
+.wall:hover .wall-actions {
+  opacity: 1;
+}
+
+.wall-actions button {
+  padding: 10px;
+  border-radius: 20px;
+  background: #222536;
+}
+
+.wall-actions .save-pin {
+  background: #d92748;
+}
+
+@media(max-width:800px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side-nav {
+    position: static;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .side-nav button {
+    min-width: 120px;
+  }
+
+  .grid {
+    columns: 3 140px;
+  }
+}
+
+@media(max-width:500px) {
+  .grid {
+    columns: 2 120px;
+  }
+}
 
 </body>
 </html>
